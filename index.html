@@ -1,0 +1,1823 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Nexum — Find the Right Teacher for Anything</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=Bricolage+Grotesque:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+
+/* -- TOKENS -- */
+[data-theme="dark"]{
+  --bg:        #080c14;
+  --bg2:       #0e1320;
+  --bg3:       #131928;
+  --surface:   #1a2235;
+  --surface2:  #1e2840;
+  --border:    rgba(255,255,255,0.07);
+  --border2:   rgba(255,255,255,0.12);
+  --text:      #f0f4ff;
+  --text2:     #8892aa;
+  --text3:     #556070;
+  --accent:    #6366f1;
+  --accent2:   #818cf8;
+  --accent3:   #a5b4fc;
+  --gold:      #f59e0b;
+  --green:     #10b981;
+  --red:       #ef4444;
+  --glass:     rgba(255,255,255,0.04);
+  --glass2:    rgba(255,255,255,0.07);
+  --shadow:    0 0 0 1px rgba(255,255,255,0.06), 0 8px 32px rgba(0,0,0,0.4);
+  --shadow2:   0 0 0 1px rgba(255,255,255,0.08), 0 24px 64px rgba(0,0,0,0.5);
+}
+[data-theme="light"]{
+  --bg:        #f8f9ff;
+  --bg2:       #f0f2fc;
+  --bg3:       #e8ecf8;
+  --surface:   #ffffff;
+  --surface2:  #f5f7ff;
+  --border:    rgba(0,0,0,0.07);
+  --border2:   rgba(0,0,0,0.12);
+  --text:      #0f1623;
+  --text2:     #4a5568;
+  --text3:     #8896a8;
+  --accent:    #4f46e5;
+  --accent2:   #6366f1;
+  --accent3:   #818cf8;
+  --gold:      #d97706;
+  --green:     #059669;
+  --red:       #dc2626;
+  --glass:     rgba(255,255,255,0.8);
+  --glass2:    rgba(255,255,255,0.95);
+  --shadow:    0 0 0 1px rgba(0,0,0,0.06), 0 8px 32px rgba(0,0,0,0.08);
+  --shadow2:   0 0 0 1px rgba(0,0,0,0.08), 0 24px 64px rgba(0,0,0,0.12);
+}
+
+/* -- BASE -- */
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Sora',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.6;
+  font-size:15px;
+  font-weight:300;
+  transition:background .3s,color .3s;
+  overflow-x:hidden;
+}
+
+/* -- ANIMATIONS -- */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+@keyframes shimmer{0%{background-position:-200% 0}100%{background-position:200% 0}}
+@keyframes glow{0%,100%{box-shadow:0 0 20px rgba(99,102,241,0.3)}50%{box-shadow:0 0 40px rgba(99,102,241,0.6)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes slideIn{from{transform:translateX(-12px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+.a1{animation:fadeUp .7s ease both .1s}
+.a2{animation:fadeUp .7s ease both .22s}
+.a3{animation:fadeUp .7s ease both .34s}
+.a4{animation:fadeUp .7s ease both .46s}
+.a5{animation:fadeUp .7s ease both .58s}
+.a6{animation:fadeUp .7s ease both .7s}
+
+/* -- SCROLLBAR -- */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:4px}
+
+/* -- NAV -- */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:68px;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 3rem;
+  background:var(--glass2);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  transition:all .3s;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:10px;
+  text-decoration:none;
+}
+.logo-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  animation:glow 3s ease-in-out infinite;
+}
+.logo-mark svg{display:block;}
+.logo-word{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.25rem;font-weight:600;
+  color:var(--text);letter-spacing:-.02em;
+}
+.logo-word span{color:var(--accent2);}
+.nav-links{display:flex;align-items:center;gap:2rem;list-style:none;}
+.nav-links a{
+  color:var(--text2);font-size:.85rem;font-weight:400;
+  text-decoration:none;letter-spacing:.01em;
+  transition:color .2s;
+}
+.nav-links a:hover,.nav-links a.active{color:var(--text);}
+.nav-right{display:flex;align-items:center;gap:.75rem;}
+.nav-btn{
+  padding:.45rem 1.2rem;border-radius:8px;
+  font-family:'Sora',sans-serif;font-size:.82rem;font-weight:400;
+  text-decoration:none;cursor:pointer;transition:all .2s;
+  border:1px solid var(--border2);
+  background:transparent;color:var(--text2);
+}
+.nav-btn:hover{color:var(--text);border-color:var(--border2);}
+.nav-btn.primary{
+  background:var(--accent);color:#fff;border-color:transparent;
+}
+.nav-btn.primary:hover{background:var(--accent2);}
+.theme-toggle{
+  width:36px;height:36px;border-radius:9px;
+  background:var(--surface);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:all .2s;color:var(--text2);
+}
+.theme-toggle:hover{color:var(--text);border-color:var(--border2);}
+
+/* -- PAGE SECTIONS -- */
+.page{display:none;}
+.page.active{display:block;}
+
+/* -- HERO -- */
+.hero{
+  min-height:100vh;
+  padding:120px 3rem 80px;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  position:relative;overflow:hidden;
+}
+.hero-bg{
+  position:absolute;inset:0;pointer-events:none;
+  overflow:hidden;
+}
+.hero-orb{
+  position:absolute;border-radius:50%;filter:blur(80px);
+}
+.orb1{
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(99,102,241,.15) 0%,transparent 70%);
+  top:-100px;left:50%;transform:translateX(-50%);
+  animation:float 8s ease-in-out infinite;
+}
+.orb2{
+  width:400px;height:400px;
+  background:radial-gradient(circle,rgba(245,158,11,.08) 0%,transparent 70%);
+  bottom:0;right:-100px;
+  animation:float 10s ease-in-out infinite reverse;
+}
+.orb3{
+  width:300px;height:300px;
+  background:radial-gradient(circle,rgba(16,185,129,.07) 0%,transparent 70%);
+  bottom:100px;left:-50px;
+  animation:float 12s ease-in-out infinite;
+}
+.hero-inner{position:relative;z-index:2;max-width:860px;margin:0 auto;}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--glass2);border:1px solid var(--border2);
+  border-radius:100px;padding:.4rem 1rem .4rem .7rem;
+  font-size:.78rem;color:var(--text2);margin-bottom:2rem;
+  backdrop-filter:blur(10px);
+}
+.hero-badge-dot{
+  width:20px;height:20px;border-radius:50%;
+  background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;color:#fff;font-weight:600;
+  animation:pulse 2s ease-in-out infinite;
+}
+h1.hero-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(2.8rem,6vw,5rem);
+  font-weight:700;line-height:1.08;
+  letter-spacing:-.03em;
+  color:var(--text);
+  margin-bottom:1.5rem;
+}
+h1.hero-title .grad{
+  background:linear-gradient(135deg,var(--accent2) 0%,var(--accent3) 50%,var(--gold) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.hero-sub{
+  font-size:1.1rem;color:var(--text2);
+  max-width:520px;margin:0 auto 2.5rem;
+  font-weight:300;line-height:1.7;
+}
+.hero-search{
+  background:var(--surface);
+  border:1px solid var(--border2);
+  border-radius:16px;
+  padding:.6rem .6rem .6rem 1.25rem;
+  display:flex;align-items:center;gap:.75rem;
+  max-width:620px;margin:0 auto 2rem;
+  box-shadow:var(--shadow2);
+  transition:all .2s;
+}
+.hero-search:focus-within{border-color:var(--accent);}
+.hero-search input{
+  flex:1;border:none;background:transparent;
+  font-family:'Sora',sans-serif;font-size:.95rem;
+  color:var(--text);font-weight:300;outline:none;
+}
+.hero-search input::placeholder{color:var(--text3);}
+.search-divider{width:1px;height:24px;background:var(--border2);}
+.subject-select{
+  background:transparent;border:none;
+  font-family:'Sora',sans-serif;font-size:.85rem;
+  color:var(--text2);outline:none;cursor:pointer;
+  padding:0 .5rem;
+}
+.subject-select option{background:var(--surface);}
+.search-btn{
+  background:var(--accent);color:#fff;border:none;
+  padding:.7rem 1.5rem;border-radius:10px;
+  font-family:'Sora',sans-serif;font-size:.85rem;font-weight:500;
+  cursor:pointer;transition:background .2s;white-space:nowrap;
+}
+.search-btn:hover{background:var(--accent2);}
+.hero-tags{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;}
+.tag{
+  background:var(--glass2);border:1px solid var(--border);
+  border-radius:100px;padding:.3rem .85rem;
+  font-size:.78rem;color:var(--text2);cursor:pointer;
+  transition:all .2s;
+}
+.tag:hover{border-color:var(--accent);color:var(--accent3);}
+.hero-stats{
+  display:flex;gap:3rem;justify-content:center;
+  margin-top:3.5rem;padding-top:2.5rem;
+  border-top:1px solid var(--border);
+}
+.hero-stat-num{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.8rem;font-weight:600;color:var(--text);
+  letter-spacing:-.02em;
+}
+.hero-stat-label{font-size:.78rem;color:var(--text3);margin-top:.15rem;}
+
+/* -- SECTION SHARED -- */
+.section{padding:5rem 3rem;}
+.section-inner{max-width:1100px;margin:0 auto;}
+.section-label{
+  font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+  color:var(--accent2);margin-bottom:.75rem;
+  display:flex;align-items:center;gap:.6rem;
+}
+.section-label::before{content:'';display:block;width:20px;height:1px;background:var(--accent);}
+h2.section-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:clamp(1.8rem,3vw,2.6rem);font-weight:600;
+  letter-spacing:-.025em;color:var(--text);
+  margin-bottom:.75rem;line-height:1.2;
+}
+.section-sub{font-size:.95rem;color:var(--text2);max-width:480px;font-weight:300;line-height:1.7;}
+
+/* -- SUBJECTS GRID -- */
+.subjects-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1rem;margin-top:2.5rem;
+}
+.subject-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:1.5rem;
+  cursor:pointer;transition:all .25s;
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;gap:.75rem;
+  position:relative;overflow:hidden;
+}
+.subject-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,var(--accent) 0%,transparent 100%);
+  opacity:0;transition:opacity .25s;
+}
+.subject-card:hover{
+  border-color:var(--accent);transform:translateY(-4px);
+  box-shadow:var(--shadow2);
+}
+.subject-card:hover::before{opacity:.05;}
+.subject-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;position:relative;z-index:1;
+}
+.subject-name{font-size:.88rem;font-weight:500;color:var(--text);position:relative;z-index:1;}
+.subject-count{font-size:.75rem;color:var(--text3);position:relative;z-index:1;}
+
+/* -- TEACHERS GRID -- */
+.teachers-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.25rem;margin-top:2.5rem;
+}
+.teacher-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:20px;overflow:hidden;
+  transition:all .25s;cursor:pointer;
+}
+.teacher-card:hover{
+  transform:translateY(-6px);
+  box-shadow:var(--shadow2);
+  border-color:var(--border2);
+}
+.teacher-card-top{
+  padding:1.5rem 1.5rem 0;
+  display:flex;justify-content:space-between;align-items:flex-start;
+}
+.teacher-avatar{
+  width:60px;height:60px;border-radius:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.3rem;font-weight:600;color:#fff;
+  position:relative;
+}
+.online-dot{
+  position:absolute;bottom:2px;right:2px;
+  width:12px;height:12px;border-radius:50%;
+  background:var(--green);
+  border:2px solid var(--surface);
+}
+.teacher-badge{
+  background:rgba(99,102,241,.15);
+  border:1px solid rgba(99,102,241,.3);
+  color:var(--accent3);
+  font-size:.65rem;letter-spacing:.08em;text-transform:uppercase;
+  padding:.25rem .65rem;border-radius:100px;font-weight:500;
+}
+.teacher-card-body{padding:1.25rem 1.5rem;}
+.teacher-name{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.05rem;font-weight:600;color:var(--text);
+  margin-bottom:.2rem;letter-spacing:-.01em;
+}
+.teacher-subject{font-size:.82rem;color:var(--text2);margin-bottom:.75rem;}
+.teacher-tags{display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:1rem;}
+.teacher-tag{
+  background:var(--bg3);border:1px solid var(--border);
+  color:var(--text2);font-size:.7rem;
+  padding:.2rem .6rem;border-radius:6px;
+}
+.teacher-stats{
+  display:flex;gap:1rem;margin-bottom:1.1rem;
+}
+.t-stat{display:flex;align-items:center;gap:.35rem;font-size:.8rem;color:var(--text2);}
+.t-stat .val{color:var(--text);font-weight:500;}
+.star{color:var(--gold);}
+.teacher-card-footer{
+  padding:1rem 1.5rem;
+  border-top:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.teacher-price{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.1rem;font-weight:600;color:var(--text);
+}
+.teacher-price span{font-size:.75rem;color:var(--text3);font-weight:300;font-family:'Sora',sans-serif;}
+.book-btn{
+  background:var(--accent);color:#fff;border:none;
+  padding:.5rem 1.1rem;border-radius:9px;
+  font-family:'Sora',sans-serif;font-size:.8rem;font-weight:500;
+  cursor:pointer;transition:all .2s;
+}
+.book-btn:hover{background:var(--accent2);transform:scale(1.03);}
+
+/* -- HOW IT WORKS -- */
+.how-bg{background:var(--bg2);}
+.steps-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1rem;margin-top:2.5rem;
+  position:relative;
+}
+.steps-grid::before{
+  content:'';position:absolute;
+  top:48px;left:calc(12.5% + 24px);
+  right:calc(12.5% + 24px);
+  height:1px;
+  background:linear-gradient(90deg,var(--accent) 0%,var(--accent3) 50%,var(--gold) 100%);
+  opacity:.3;
+}
+.step-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;padding:1.75rem 1.5rem;
+  text-align:center;position:relative;
+}
+.step-num{
+  width:48px;height:48px;border-radius:14px;
+  background:linear-gradient(135deg,var(--accent) 0%,var(--accent2) 100%);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.1rem;font-weight:600;color:#fff;
+  margin:0 auto 1.25rem;
+}
+.step-title{font-size:.95rem;font-weight:500;color:var(--text);margin-bottom:.5rem;}
+.step-desc{font-size:.82rem;color:var(--text2);line-height:1.6;}
+
+/* -- TESTIMONIALS -- */
+.test-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.25rem;margin-top:2.5rem;
+}
+.test-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;padding:1.75rem;
+  transition:all .2s;
+}
+.test-card:hover{border-color:var(--border2);transform:translateY(-3px);}
+.test-stars{color:var(--gold);font-size:.85rem;letter-spacing:2px;margin-bottom:1rem;}
+.test-quote{
+  font-size:.92rem;color:var(--text2);line-height:1.75;
+  margin-bottom:1.25rem;font-style:italic;font-weight:300;
+}
+.test-person{display:flex;align-items:center;gap:.75rem;}
+.test-avatar{
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:600;color:#fff;
+}
+.test-name{font-size:.88rem;font-weight:500;color:var(--text);}
+.test-role{font-size:.75rem;color:var(--text3);}
+
+/* -- CTA SECTION -- */
+.cta-section{
+  background:linear-gradient(135deg,var(--accent) 0%,#7c3aed 100%);
+  padding:5rem 3rem;text-align:center;
+  position:relative;overflow:hidden;
+}
+.cta-section::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+}
+.cta-inner{position:relative;z-index:2;max-width:600px;margin:0 auto;}
+.cta-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:2.6rem;font-weight:700;color:#fff;
+  letter-spacing:-.025em;margin-bottom:1rem;line-height:1.15;
+}
+.cta-sub{font-size:1rem;color:rgba(255,255,255,.75);margin-bottom:2rem;font-weight:300;}
+.cta-actions{display:flex;gap:.75rem;justify-content:center;flex-wrap:wrap;}
+.cta-btn{
+  padding:.85rem 2rem;border-radius:12px;
+  font-family:'Sora',sans-serif;font-size:.9rem;font-weight:500;
+  cursor:pointer;transition:all .2s;text-decoration:none;
+  border:none;
+}
+.cta-btn.white{background:#fff;color:var(--accent);}
+.cta-btn.white:hover{background:rgba(255,255,255,.9);}
+.cta-btn.outline{background:transparent;color:#fff;border:2px solid rgba(255,255,255,.4);}
+.cta-btn.outline:hover{border-color:#fff;}
+
+/* -- FOOTER -- */
+footer{
+  background:var(--bg2);border-top:1px solid var(--border);
+  padding:3rem;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.footer-left{display:flex;align-items:center;gap:.75rem;}
+.footer-text{font-size:.8rem;color:var(--text3);}
+.footer-links{display:flex;gap:2rem;}
+.footer-links a{font-size:.8rem;color:var(--text3);text-decoration:none;transition:color .2s;}
+.footer-links a:hover{color:var(--text2);}
+
+/* -- DISCOVERY PAGE -- */
+.discovery-header{
+  background:var(--bg2);
+  padding:100px 3rem 2rem;
+  border-bottom:1px solid var(--border);
+}
+.discovery-header-inner{max-width:1100px;margin:0 auto;}
+.discovery-title{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:2.2rem;font-weight:600;
+  letter-spacing:-.025em;margin-bottom:.5rem;
+}
+.discovery-sub{font-size:.9rem;color:var(--text2);margin-bottom:1.5rem;}
+.filter-bar{
+  display:flex;gap:.75rem;flex-wrap:wrap;align-items:center;
+}
+.filter-pill{
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text2);font-size:.8rem;
+  padding:.45rem 1rem;border-radius:100px;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;gap:.4rem;
+}
+.filter-pill:hover,.filter-pill.active{
+  background:var(--accent);border-color:var(--accent);color:#fff;
+}
+.filter-search{
+  flex:1;min-width:200px;max-width:320px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:100px;padding:.45rem 1rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.filter-search input{
+  border:none;background:transparent;
+  font-family:'Sora',sans-serif;font-size:.82rem;
+  color:var(--text);outline:none;flex:1;
+}
+.discovery-body{
+  display:grid;grid-template-columns:260px 1fr;
+  gap:2rem;max-width:1100px;margin:2rem auto;
+  padding:0 3rem 4rem;
+}
+.sidebar-filters{position:sticky;top:88px;height:fit-content;}
+.filter-group{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:1.25rem;margin-bottom:1rem;
+}
+.filter-group-title{
+  font-size:.78rem;font-weight:500;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--text2);
+  margin-bottom:1rem;
+}
+.filter-range{width:100%;accent-color:var(--accent);}
+.filter-check{
+  display:flex;align-items:center;gap:.6rem;
+  margin-bottom:.65rem;cursor:pointer;font-size:.85rem;
+  color:var(--text2);
+}
+.filter-check input[type=checkbox]{accent-color:var(--accent);}
+.filter-check:last-child{margin-bottom:0;}
+.results-header{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:1.25rem;
+}
+.results-count{font-size:.88rem;color:var(--text2);}
+.results-count strong{color:var(--text);}
+.sort-select{
+  background:var(--surface);border:1px solid var(--border);
+  color:var(--text2);font-family:'Sora',sans-serif;font-size:.82rem;
+  padding:.4rem .8rem;border-radius:8px;outline:none;cursor:pointer;
+}
+.teachers-list{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem;}
+
+/* -- TEACHER PROFILE PAGE -- */
+.profile-page{padding-top:68px;}
+.profile-cover{
+  height:200px;
+  background:linear-gradient(135deg,#1e1b4b 0%,#312e81 50%,#1e40af 100%);
+  position:relative;
+}
+.profile-cover-actions{
+  position:absolute;bottom:1rem;right:2rem;
+  display:flex;gap:.75rem;
+}
+.profile-main{max-width:1100px;margin:0 auto;padding:0 3rem 4rem;}
+.profile-header{
+  display:flex;justify-content:space-between;
+  align-items:flex-end;margin-bottom:2.5rem;
+  padding-top:1.5rem;
+}
+.profile-left{display:flex;gap:1.5rem;align-items:flex-end;}
+.profile-avatar-wrap{position:relative;margin-top:-60px;}
+.profile-avatar{
+  width:110px;height:110px;border-radius:24px;
+  border:4px solid var(--bg);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:2.2rem;font-weight:700;color:#fff;
+}
+.verified-badge{
+  position:absolute;bottom:4px;right:4px;
+  width:28px;height:28px;border-radius:50%;
+  background:var(--accent);border:3px solid var(--bg);
+  display:flex;align-items:center;justify-content:center;
+}
+.profile-info{}
+.profile-name{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.75rem;font-weight:700;letter-spacing:-.02em;
+  color:var(--text);margin-bottom:.2rem;
+}
+.profile-handle{font-size:.85rem;color:var(--text3);}
+.profile-actions{display:flex;gap:.75rem;}
+.action-btn{
+  padding:.65rem 1.5rem;border-radius:11px;
+  font-family:'Sora',sans-serif;font-size:.85rem;font-weight:500;
+  cursor:pointer;transition:all .2s;border:1px solid var(--border2);
+  background:transparent;color:var(--text2);
+}
+.action-btn:hover{color:var(--text);}
+.action-btn.primary{background:var(--accent);color:#fff;border-color:transparent;}
+.action-btn.primary:hover{background:var(--accent2);}
+.profile-grid{display:grid;grid-template-columns:1fr 340px;gap:2rem;}
+.profile-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;padding:1.75rem;margin-bottom:1.5rem;
+}
+.profile-card-title{
+  font-size:.78rem;font-weight:500;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--text2);
+  margin-bottom:1.25rem;display:flex;align-items:center;gap:.5rem;
+}
+.profile-about{
+  font-size:.92rem;color:var(--text2);line-height:1.75;font-weight:300;
+}
+.skill-tags{display:flex;gap:.5rem;flex-wrap:wrap;}
+.skill-tag{
+  background:rgba(99,102,241,.1);
+  border:1px solid rgba(99,102,241,.2);
+  color:var(--accent3);font-size:.78rem;
+  padding:.3rem .8rem;border-radius:8px;
+}
+.avail-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:.4rem;}
+.avail-day{
+  text-align:center;padding:.5rem .25rem;
+  border-radius:8px;font-size:.72rem;
+}
+.avail-day .day-name{color:var(--text3);margin-bottom:.3rem;}
+.avail-day .day-dot{
+  width:8px;height:8px;border-radius:50%;
+  margin:0 auto;
+}
+.dot-avail{background:var(--green);}
+.dot-busy{background:var(--text3);}
+.review-item{
+  padding:1.1rem 0;border-bottom:1px solid var(--border);
+}
+.review-item:last-child{border-bottom:none;}
+.review-header{display:flex;justify-content:space-between;margin-bottom:.5rem;}
+.reviewer{display:flex;align-items:center;gap:.6rem;}
+.reviewer-avatar{
+  width:32px;height:32px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:600;color:#fff;
+}
+.reviewer-name{font-size:.85rem;font-weight:500;color:var(--text);}
+.review-date{font-size:.75rem;color:var(--text3);}
+.review-text{font-size:.85rem;color:var(--text2);line-height:1.65;}
+.booking-card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;
+  position:sticky;top:88px;
+}
+.booking-card-header{padding:1.5rem;border-bottom:1px solid var(--border);}
+.booking-price-main{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:2rem;font-weight:700;color:var(--text);
+  margin-bottom:.2rem;
+}
+.booking-price-main span{font-size:.9rem;font-weight:300;color:var(--text3);font-family:'Sora',sans-serif;}
+.booking-rating{display:flex;align-items:center;gap:.4rem;font-size:.85rem;color:var(--text2);}
+.booking-card-body{padding:1.5rem;}
+.booking-detail{
+  display:flex;justify-content:space-between;
+  font-size:.85rem;margin-bottom:.85rem;
+}
+.booking-detail .bd-label{color:var(--text2);}
+.booking-detail .bd-val{color:var(--text);font-weight:500;}
+.booking-cta{width:100%;padding:.85rem;border-radius:12px;
+  background:var(--accent);color:#fff;border:none;
+  font-family:'Sora',sans-serif;font-size:.92rem;font-weight:500;
+  cursor:pointer;transition:all .2s;margin-bottom:.75rem;}
+.booking-cta:hover{background:var(--accent2);}
+.msg-cta{width:100%;padding:.75rem;border-radius:12px;
+  background:transparent;color:var(--text2);
+  border:1px solid var(--border2);
+  font-family:'Sora',sans-serif;font-size:.88rem;
+  cursor:pointer;transition:all .2s;}
+.msg-cta:hover{color:var(--text);border-color:var(--border2);}
+.response-row{
+  display:flex;align-items:center;gap:.5rem;
+  font-size:.78rem;color:var(--text3);margin-top:1rem;
+  justify-content:center;
+}
+
+/* -- DASHBOARD -- */
+.dash-layout{
+  display:flex;min-height:100vh;padding-top:68px;
+}
+.dash-sidebar{
+  width:240px;flex-shrink:0;
+  background:var(--bg2);border-right:1px solid var(--border);
+  padding:1.5rem 0;position:sticky;top:68px;height:calc(100vh - 68px);
+  overflow-y:auto;
+}
+.dash-nav-section{
+  font-size:.65rem;letter-spacing:.16em;text-transform:uppercase;
+  color:var(--text3);padding:.75rem 1.5rem .4rem;
+}
+.dash-nav-item{
+  display:flex;align-items:center;gap:.75rem;
+  padding:.65rem 1.5rem;font-size:.85rem;
+  color:var(--text2);cursor:pointer;
+  transition:all .15s;border-left:2px solid transparent;
+}
+.dash-nav-item:hover{color:var(--text);background:var(--glass2);}
+.dash-nav-item.active{
+  color:var(--text);border-left-color:var(--accent);
+  background:rgba(99,102,241,.08);
+}
+.dash-nav-item .n-badge{
+  margin-left:auto;background:var(--accent);color:#fff;
+  font-size:.62rem;padding:.1rem .45rem;border-radius:100px;
+}
+.dash-main{flex:1;padding:2rem;overflow-y:auto;}
+.dash-topbar{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:2rem;
+}
+.dash-greeting{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.5rem;font-weight:600;letter-spacing:-.02em;
+}
+.dash-greeting span{color:var(--accent2);}
+.dash-date{font-size:.82rem;color:var(--text3);margin-top:.15rem;}
+.dash-actions{display:flex;gap:.75rem;}
+.kpi-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:1rem;margin-bottom:2rem;
+}
+.kpi{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:16px;padding:1.35rem;
+}
+.kpi-label{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--text3);margin-bottom:.65rem;}
+.kpi-val{
+  font-family:'Bricolage Grotesque',sans-serif;
+  font-size:1.9rem;font-weight:600;color:var(--text);
+  letter-spacing:-.02em;margin-bottom:.2rem;
+}
+.kpi-trend{font-size:.75rem;color:var(--green);display:flex;align-items:center;gap:.25rem;}
+.kpi-trend.down{color:var(--red);}
+.dash-grid{
+  display:grid;grid-template-columns:1fr 320px;
+  gap:1.5rem;
+}
+.dash-panel{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;margin-bottom:1.5rem;
+}
+.panel-header{
+  padding:1.1rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.panel-title{font-size:.85rem;font-weight:500;color:var(--text);}
+.panel-action{font-size:.78rem;color:var(--accent2);cursor:pointer;text-decoration:none;}
+.session-item{
+  padding:1rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:1rem;
+}
+.session-item:last-child{border-bottom:none;}
+.session-avatar{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.85rem;font-weight:600;color:#fff;flex-shrink:0;
+}
+.session-info{flex:1;}
+.session-name{font-size:.88rem;font-weight:500;color:var(--text);}
+.session-meta{font-size:.75rem;color:var(--text3);margin-top:.15rem;}
+.session-status{
+  font-size:.72rem;padding:.25rem .65rem;border-radius:100px;
+  font-weight:500;
+}
+.status-confirmed{background:rgba(16,185,129,.12);color:var(--green);border:1px solid rgba(16,185,129,.25);}
+.status-pending{background:rgba(245,158,11,.1);color:var(--gold);border:1px solid rgba(245,158,11,.25);}
+.status-cancelled{background:rgba(239,68,68,.1);color:var(--red);border:1px solid rgba(239,68,68,.2);}
+.earnings-chart{
+  padding:1.5rem;
+  display:flex;align-items:flex-end;gap:.4rem;height:120px;
+}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:.3rem;}
+.bar{
+  width:100%;border-radius:5px 5px 0 0;
+  background:linear-gradient(180deg,var(--accent) 0%,var(--accent2) 100%);
+  opacity:.7;transition:opacity .2s;cursor:pointer;
+}
+.bar:hover{opacity:1;}
+.bar-label{font-size:.65rem;color:var(--text3);}
+.msg-list-item{
+  padding:.85rem 1.5rem;border-bottom:1px solid var(--border);
+  display:flex;gap:.85rem;align-items:center;cursor:pointer;
+  transition:background .15s;
+}
+.msg-list-item:hover{background:var(--glass2);}
+.msg-list-item:last-child{border-bottom:none;}
+.msg-avatar{width:38px;height:38px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:600;color:#fff;}
+.msg-name{font-size:.85rem;font-weight:500;color:var(--text);}
+.msg-preview{font-size:.75rem;color:var(--text3);margin-top:.1rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:160px;}
+.msg-time{font-size:.72rem;color:var(--text3);margin-left:auto;flex-shrink:0;}
+.msg-unread{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);flex-shrink:0;
+}
+.quick-stat{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.85rem 1.5rem;border-bottom:1px solid var(--border);
+  font-size:.85rem;
+}
+.quick-stat:last-child{border-bottom:none;}
+.qs-label{color:var(--text2);}
+.qs-val{font-weight:500;color:var(--text);}
+
+/* -- SHARED UTILS -- */
+.flex{display:flex;} .gap1{gap:.5rem;} .gap2{gap:1rem;} .items-center{align-items:center;}
+.mt1{margin-top:.5rem;} .mt2{margin-top:1rem;} .mb1{margin-bottom:.5rem;} .mb2{margin-bottom:1rem;}
+.text-sm{font-size:.82rem;} .text-xs{font-size:.75rem;} .text-muted{color:var(--text3);}
+.font-medium{font-weight:500;} .font-bold{font-weight:700;}
+.hidden{display:none!important;}
+
+/* -- RANGE INPUT -- */
+input[type=range]{
+  -webkit-appearance:none;width:100%;height:4px;
+  border-radius:4px;background:var(--surface2);outline:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;
+  border-radius:50%;background:var(--accent);cursor:pointer;
+}
+</style>
+</head>
+<body>
+
+<!-- -- NAV -- -->
+<nav id="mainNav">
+  <a href="#" class="nav-logo" onclick="showPage('landing')">
+    <div class="logo-mark">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+        <circle cx="7" cy="10" r="5.5" stroke="white" stroke-width="1.4"/>
+        <circle cx="13" cy="10" r="5.5" stroke="white" stroke-width="1.4"/>
+        <line x1="10" y1="4.5" x2="10" y2="15.5" stroke="#0e1320" stroke-width="2.2"/>
+      </svg>
+    </div>
+    <span class="logo-word">Nex<span>um</span></span>
+  </a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" onclick="showPage('landing')" id="nl-home">Home</a></li>
+    <li><a href="#" onclick="showPage('discovery')" id="nl-disc">Find Teachers</a></li>
+    <li><a href="#" onclick="showPage('dashboard')" id="nl-dash">Dashboard</a></li>
+    <li><a href="#" onclick="showPage('profile-page')" id="nl-prof">Profile</a></li>
+  </ul>
+  <div class="nav-right">
+    <div class="theme-toggle" onclick="toggleTheme()" title="Toggle theme" role="button" aria-label="Toggle dark/light mode">
+      <svg id="themeIcon" width="16" height="16" viewBox="0 0 16 16" fill="none">
+        <circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.3"/>
+        <line x1="8" y1="1" x2="8" y2="3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="8" y1="13" x2="8" y2="15" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="1" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="13" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="3.05" y1="3.05" x2="4.46" y2="4.46" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="11.54" y1="11.54" x2="12.95" y2="12.95" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="12.95" y1="3.05" x2="11.54" y2="4.46" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        <line x1="4.46" y1="11.54" x2="3.05" y2="12.95" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      </svg>
+    </div>
+    <a href="#" class="nav-btn" onclick="showPage('dashboard')">Log in</a>
+    <a href="#" class="nav-btn primary" onclick="showPage('dashboard')">Get started</a>
+  </div>
+</nav>
+
+<!-- -------------------------------------- -->
+<!-- PAGE: LANDING                          -->
+<!-- -------------------------------------- -->
+<div class="page active" id="landing">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="hero-orb orb1"></div>
+      <div class="hero-orb orb2"></div>
+      <div class="hero-orb orb3"></div>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-badge a1">
+        <div class="hero-badge-dot">?</div>
+        Africa's premier tutoring marketplace
+      </div>
+      <h1 class="hero-title a2">
+        Find the Right Teacher<br>for <span class="grad">Anything.</span>
+      </h1>
+      <p class="hero-sub a3">
+        Browse thousands of verified tutors across every subject. Book group sessions, compare prices, and learn in person — all in one place.
+      </p>
+      <div class="hero-search a4">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="7.5" cy="7.5" r="5.5" stroke="var(--text3)" stroke-width="1.4"/><line x1="11.5" y1="11.5" x2="16" y2="16" stroke="var(--text3)" stroke-width="1.4" stroke-linecap="round"/></svg>
+        <input type="text" placeholder="Search by subject, teacher, or topic…"/>
+        <div class="search-divider"></div>
+        <select class="subject-select" aria-label="Select subject">
+          <option>All subjects</option>
+          <option>Mathematics</option>
+          <option>Physics</option>
+          <option>English</option>
+          <option>Coding</option>
+          <option>Chemistry</option>
+        </select>
+        <button class="search-btn" onclick="showPage('discovery')">Search</button>
+      </div>
+      <div class="hero-tags a5">
+        <span class="tag" onclick="showPage('discovery')">?? Mathematics</span>
+        <span class="tag" onclick="showPage('discovery')">?? Coding</span>
+        <span class="tag" onclick="showPage('discovery')">?? Chemistry</span>
+        <span class="tag" onclick="showPage('discovery')">?? English</span>
+        <span class="tag" onclick="showPage('discovery')">?? Accounting</span>
+        <span class="tag" onclick="showPage('discovery')">?? Design</span>
+      </div>
+      <div class="hero-stats a6">
+        <div><div class="hero-stat-num">12,400+</div><div class="hero-stat-label">Students learning</div></div>
+        <div><div class="hero-stat-num">2,800+</div><div class="hero-stat-label">Verified tutors</div></div>
+        <div><div class="hero-stat-num">48+</div><div class="hero-stat-label">Subjects covered</div></div>
+        <div><div class="hero-stat-num">4.92?</div><div class="hero-stat-label">Average rating</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBJECTS -->
+  <section class="section" style="background:var(--bg2);">
+    <div class="section-inner">
+      <div class="section-label">Browse by subject</div>
+      <h2 class="section-title">Every subject. Every level.</h2>
+      <p class="section-sub">From Grade 8 maths to university accounting — find a tutor who knows your syllabus.</p>
+      <div class="subjects-grid">
+        <div class="subject-card" onclick="showPage('discovery')">
+          <div class="subject-icon" style="background:rgba(99,102,241,.15);">??</div>
+          <div class="subject-name">Mathematics</div>
+          <div class="subject-count">340 tutors</div>
+        </div>
+        <div class="subject-card" onclick="showPage('discovery')">
+          <div class="subject-icon" style="background:rgba(245,158,11,.12);">??</div>
+          <div class="subject-name">Physical Science</div>
+          <div class="subject-count">218 tutors</div>
+        </div>
+        <div class="subject-card" onclick="showPage('discovery')">
+          <div class="subject-icon" style="background:rgba(16,185,129,.12);">??</div>
+          <div class="subject-name">Coding & Tech</div>
+          <div class="subject-count">195 tutors</div>
+        </div>
+        <div class="subject-card" onclick="showPage('discovery')">
+          <div class="subject-icon" style="background:rgba(236,72,153,.12);">??</div>
+          <div class="subject-name">English</div>
+          <div class="subject-count">280 tutors</div>
+        </div>
+        <div class="subject-card" onclick="showPage('discovery')">
+          <div class="subject-icon" style="background:rgba(59,130,246,.12);">??</div>
+          <div class="subject-name">Accounting</div>
+          <div class="subject-count">162 tutors</div>
+        </div>
+        <div class="subject-card" onclick="showPage('discovery')">
+          <div class="subject-icon" style="background:rgba(139,92,246,.12);">??</div>
+          <div class="subject-name">Life Sciences</div>
+          <div class="subject-count">144 tutors</div>
+        </div>
+        <div class="subject-card" onclick="showPage('discovery')">
+          <div class="subject-icon" style="background:rgba(251,146,60,.12);">??</div>
+          <div class="subject-name">Business Studies</div>
+          <div class="subject-count">128 tutors</div>
+        </div>
+        <div class="subject-card" onclick="showPage('discovery')">
+          <div class="subject-icon" style="background:rgba(34,197,94,.12);">??</div>
+          <div class="subject-name">Graphic Design</div>
+          <div class="subject-count">97 tutors</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURED TEACHERS -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">Top rated</div>
+      <h2 class="section-title">Meet your next teacher.</h2>
+      <p class="section-sub">Every tutor is verified, rated by real students, and competes openly on quality.</p>
+      <div class="teachers-grid">
+
+        <div class="teacher-card" onclick="showPage('profile-page')">
+          <div class="teacher-card-top">
+            <div class="teacher-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">
+              <div class="online-dot"></div>
+              AM
+            </div>
+            <span class="teacher-badge">? Top Tutor</span>
+          </div>
+          <div class="teacher-card-body">
+            <div class="teacher-name">Amara Mensah</div>
+            <div class="teacher-subject">Mathematics & Physics · Accra, Ghana</div>
+            <div class="teacher-tags">
+              <span class="teacher-tag">Grade 10–12</span>
+              <span class="teacher-tag">Matric</span>
+              <span class="teacher-tag">University</span>
+            </div>
+            <div class="teacher-stats">
+              <div class="t-stat"><span class="star">?</span><span class="val">4.98</span><span>(124)</span></div>
+              <div class="t-stat"><span class="val">312</span><span> sessions</span></div>
+              <div class="t-stat"><span class="val" style="color:var(--green)">?</span><span> Online</span></div>
+            </div>
+          </div>
+          <div class="teacher-card-footer">
+            <div class="teacher-price">R180 <span>/ hour</span></div>
+            <button class="book-btn">Book session</button>
+          </div>
+        </div>
+
+        <div class="teacher-card" onclick="showPage('profile-page')">
+          <div class="teacher-card-top">
+            <div class="teacher-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">
+              NK
+            </div>
+            <span class="teacher-badge">? Verified</span>
+          </div>
+          <div class="teacher-card-body">
+            <div class="teacher-name">Nkosi Dlamini</div>
+            <div class="teacher-subject">Coding & Web Dev · Johannesburg, SA</div>
+            <div class="teacher-tags">
+              <span class="teacher-tag">Python</span>
+              <span class="teacher-tag">JavaScript</span>
+              <span class="teacher-tag">React</span>
+            </div>
+            <div class="teacher-stats">
+              <div class="t-stat"><span class="star">?</span><span class="val">4.95</span><span>(98)</span></div>
+              <div class="t-stat"><span class="val">204</span><span> sessions</span></div>
+              <div class="t-stat" style="color:var(--text3)"><span class="val">?</span><span> Away</span></div>
+            </div>
+          </div>
+          <div class="teacher-card-footer">
+            <div class="teacher-price">R220 <span>/ hour</span></div>
+            <button class="book-btn">Book session</button>
+          </div>
+        </div>
+
+        <div class="teacher-card" onclick="showPage('profile-page')">
+          <div class="teacher-card-top">
+            <div class="teacher-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">
+              <div class="online-dot"></div>
+              FO
+            </div>
+            <span class="teacher-badge">? Top Tutor</span>
+          </div>
+          <div class="teacher-card-body">
+            <div class="teacher-name">Fatima Osei</div>
+            <div class="teacher-subject">English & Literature · Nairobi, Kenya</div>
+            <div class="teacher-tags">
+              <span class="teacher-tag">GCSE</span>
+              <span class="teacher-tag">A-Level</span>
+              <span class="teacher-tag">IELTS</span>
+            </div>
+            <div class="teacher-stats">
+              <div class="t-stat"><span class="star">?</span><span class="val">4.97</span><span>(211)</span></div>
+              <div class="t-stat"><span class="val">480</span><span> sessions</span></div>
+              <div class="t-stat"><span class="val" style="color:var(--green)">?</span><span> Online</span></div>
+            </div>
+          </div>
+          <div class="teacher-card-footer">
+            <div class="teacher-price">R150 <span>/ hour</span></div>
+            <button class="book-btn">Book session</button>
+          </div>
+        </div>
+
+      </div>
+      <div style="text-align:center;margin-top:2rem;">
+        <button class="action-btn" onclick="showPage('discovery')" style="padding:.75rem 2rem;font-size:.9rem;">
+          Browse all 2,800+ tutors ?
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="section how-bg">
+    <div class="section-inner">
+      <div class="section-label">How it works</div>
+      <h2 class="section-title">Up and running in minutes.</h2>
+      <p class="section-sub">No sign-up required to browse. Book your first session in under 5 minutes.</p>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-title">Search & filter</div>
+          <p class="step-desc">Browse tutors by subject, location, price, and rating. Compare profiles side by side.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-title">View profiles</div>
+          <p class="step-desc">Read bios, check reviews, see availability, and message tutors before committing.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-title">Book & pay</div>
+          <p class="step-desc">Pay securely through Nexum. Your money is held in escrow until the session is confirmed.</p>
+        </div>
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-title">Learn & review</div>
+          <p class="step-desc">Attend your session and leave a review. Great tutors rise to the top — reputation matters.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="section">
+    <div class="section-inner">
+      <div class="section-label">Student stories</div>
+      <h2 class="section-title">Real students. Real results.</h2>
+      <div class="test-grid">
+        <div class="test-card">
+          <div class="test-stars">?????</div>
+          <div class="test-quote">"I found a maths tutor in 10 minutes and my marks went from 48% to 82% in one term. Nexum changed my entire school year."</div>
+          <div class="test-person">
+            <div class="test-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">TM</div>
+            <div>
+              <div class="test-name">Thabo Molefe</div>
+              <div class="test-role">Grade 12 Student · Johannesburg</div>
+            </div>
+          </div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">?????</div>
+          <div class="test-quote">"As a parent, I love that I can see the tutor's full history and ratings before I let them work with my daughter. The transparency is incredible."</div>
+          <div class="test-person">
+            <div class="test-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">AN</div>
+            <div>
+              <div class="test-name">Adeola Nwosu</div>
+              <div class="test-role">Parent · Lagos, Nigeria</div>
+            </div>
+          </div>
+        </div>
+        <div class="test-card">
+          <div class="test-stars">?????</div>
+          <div class="test-quote">"I earn more in one week on Nexum than I used to in a month tutoring privately. The platform handles everything — I just teach."</div>
+          <div class="test-person">
+            <div class="test-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706);">KK</div>
+            <div>
+              <div class="test-name">Kwame Koomson</div>
+              <div class="test-role">Mathematics Tutor · Accra</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="cta-inner">
+      <h2 class="cta-title">Start learning today.<br>First session on us.</h2>
+      <p class="cta-sub">Join 12,400 students already learning on Nexum. No commitment, cancel anytime.</p>
+      <div class="cta-actions">
+        <button class="cta-btn white" onclick="showPage('discovery')">Find a tutor ?</button>
+        <button class="cta-btn outline" onclick="showPage('dashboard')">Become a tutor</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-left">
+      <div class="logo-mark" style="width:28px;height:28px;border-radius:7px;">
+        <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <circle cx="7" cy="10" r="5.5" stroke="white" stroke-width="1.4"/>
+          <circle cx="13" cy="10" r="5.5" stroke="white" stroke-width="1.4"/>
+          <line x1="10" y1="4.5" x2="10" y2="15.5" stroke="#0e1320" stroke-width="2.2"/>
+        </svg>
+      </div>
+      <span class="footer-text">© 2026 Nexum. All rights reserved.</span>
+    </div>
+    <div class="footer-links">
+      <a href="#">Privacy</a><a href="#">Terms</a><a href="#">Support</a><a href="#">Blog</a>
+    </div>
+  </footer>
+</div>
+
+<!-- -------------------------------------- -->
+<!-- PAGE: DISCOVERY                        -->
+<!-- -------------------------------------- -->
+<div class="page" id="discovery">
+  <div class="discovery-header">
+    <div class="discovery-header-inner">
+      <h1 class="discovery-title">Find your tutor</h1>
+      <p class="discovery-sub">2,847 verified tutors across Africa. Filter by subject, price, and rating.</p>
+      <div class="filter-bar">
+        <div class="filter-search">
+          <svg width="14" height="14" viewBox="0 0 18 18" fill="none" aria-hidden="true"><circle cx="7.5" cy="7.5" r="5.5" stroke="var(--text3)" stroke-width="1.4"/><line x1="11.5" y1="11.5" x2="16" y2="16" stroke="var(--text3)" stroke-width="1.4" stroke-linecap="round"/></svg>
+          <input type="text" placeholder="Search tutors…"/>
+        </div>
+        <span class="filter-pill active">All subjects</span>
+        <span class="filter-pill">Mathematics</span>
+        <span class="filter-pill">Physics</span>
+        <span class="filter-pill">Coding</span>
+        <span class="filter-pill">English</span>
+        <span class="filter-pill">Accounting</span>
+        <span class="filter-pill">+ More</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="discovery-body">
+    <!-- SIDEBAR -->
+    <div class="sidebar-filters">
+      <div class="filter-group">
+        <div class="filter-group-title">Price range</div>
+        <input type="range" min="0" max="500" value="300" class="filter-range" aria-label="Price range"/>
+        <div class="flex" style="justify-content:space-between;margin-top:.5rem;">
+          <span class="text-xs text-muted">R0</span>
+          <span class="text-xs text-muted">R300/hr</span>
+          <span class="text-xs text-muted">R500+</span>
+        </div>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-title">Minimum rating</div>
+        <label class="filter-check"><input type="checkbox" checked/> ? 4.5 and above</label>
+        <label class="filter-check"><input type="checkbox"/> ? 4.0 and above</label>
+        <label class="filter-check"><input type="checkbox"/> ? Any rating</label>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-title">Availability</div>
+        <label class="filter-check"><input type="checkbox" checked/> Online now</label>
+        <label class="filter-check"><input type="checkbox"/> This week</label>
+        <label class="filter-check"><input type="checkbox"/> Weekends</label>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-title">Session type</div>
+        <label class="filter-check"><input type="checkbox" checked/> Group classes</label>
+        <label class="filter-check"><input type="checkbox"/> 1-on-1</label>
+        <label class="filter-check"><input type="checkbox"/> In-person</label>
+        <label class="filter-check"><input type="checkbox"/> Online</label>
+      </div>
+      <div class="filter-group">
+        <div class="filter-group-title">Verification</div>
+        <label class="filter-check"><input type="checkbox" checked/> Verified tutors only</label>
+        <label class="filter-check"><input type="checkbox"/> ID verified</label>
+      </div>
+    </div>
+
+    <!-- RESULTS -->
+    <div>
+      <div class="results-header">
+        <div class="results-count"><strong>2,847</strong> tutors found</div>
+        <select class="sort-select" aria-label="Sort tutors">
+          <option>Sort: Top rated</option>
+          <option>Sort: Price: Low to high</option>
+          <option>Sort: Most sessions</option>
+          <option>Sort: Newest</option>
+        </select>
+      </div>
+      <div class="teachers-list">
+
+        <div class="teacher-card" onclick="showPage('profile-page')">
+          <div class="teacher-card-top">
+            <div class="teacher-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);"><div class="online-dot"></div>AM</div>
+            <span class="teacher-badge">? Top Tutor</span>
+          </div>
+          <div class="teacher-card-body">
+            <div class="teacher-name">Amara Mensah</div>
+            <div class="teacher-subject">Mathematics & Physics · Accra</div>
+            <div class="teacher-tags"><span class="teacher-tag">Grade 10–12</span><span class="teacher-tag">Matric</span></div>
+            <div class="teacher-stats">
+              <div class="t-stat"><span class="star">?</span><span class="val">4.98</span><span>(124)</span></div>
+              <div class="t-stat"><span class="val">312</span><span> sessions</span></div>
+            </div>
+          </div>
+          <div class="teacher-card-footer">
+            <div class="teacher-price">R180 <span>/ hr</span></div>
+            <button class="book-btn">Book</button>
+          </div>
+        </div>
+
+        <div class="teacher-card" onclick="showPage('profile-page')">
+          <div class="teacher-card-top">
+            <div class="teacher-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">NK</div>
+            <span class="teacher-badge">? Verified</span>
+          </div>
+          <div class="teacher-card-body">
+            <div class="teacher-name">Nkosi Dlamini</div>
+            <div class="teacher-subject">Coding & Web Dev · Johannesburg</div>
+            <div class="teacher-tags"><span class="teacher-tag">Python</span><span class="teacher-tag">React</span></div>
+            <div class="teacher-stats">
+              <div class="t-stat"><span class="star">?</span><span class="val">4.95</span><span>(98)</span></div>
+              <div class="t-stat"><span class="val">204</span><span> sessions</span></div>
+            </div>
+          </div>
+          <div class="teacher-card-footer">
+            <div class="teacher-price">R220 <span>/ hr</span></div>
+            <button class="book-btn">Book</button>
+          </div>
+        </div>
+
+        <div class="teacher-card" onclick="showPage('profile-page')">
+          <div class="teacher-card-top">
+            <div class="teacher-avatar" style="background:linear-gradient(135deg,#10b981,#059669);"><div class="online-dot"></div>FO</div>
+            <span class="teacher-badge">? Top Tutor</span>
+          </div>
+          <div class="teacher-card-body">
+            <div class="teacher-name">Fatima Osei</div>
+            <div class="teacher-subject">English & Literature · Nairobi</div>
+            <div class="teacher-tags"><span class="teacher-tag">GCSE</span><span class="teacher-tag">IELTS</span></div>
+            <div class="teacher-stats">
+              <div class="t-stat"><span class="star">?</span><span class="val">4.97</span><span>(211)</span></div>
+              <div class="t-stat"><span class="val">480</span><span> sessions</span></div>
+            </div>
+          </div>
+          <div class="teacher-card-footer">
+            <div class="teacher-price">R150 <span>/ hr</span></div>
+            <button class="book-btn">Book</button>
+          </div>
+        </div>
+
+        <div class="teacher-card" onclick="showPage('profile-page')">
+          <div class="teacher-card-top">
+            <div class="teacher-avatar" style="background:linear-gradient(135deg,#ec4899,#8b5cf6);"><div class="online-dot"></div>ZA</div>
+            <span class="teacher-badge">? Verified</span>
+          </div>
+          <div class="teacher-card-body">
+            <div class="teacher-name">Zanele Adeyemi</div>
+            <div class="teacher-subject">Accounting & Economics · Lagos</div>
+            <div class="teacher-tags"><span class="teacher-tag">Grade 11</span><span class="teacher-tag">University</span></div>
+            <div class="teacher-stats">
+              <div class="t-stat"><span class="star">?</span><span class="val">4.91</span><span>(76)</span></div>
+              <div class="t-stat"><span class="val">142</span><span> sessions</span></div>
+            </div>
+          </div>
+          <div class="teacher-card-footer">
+            <div class="teacher-price">R165 <span>/ hr</span></div>
+            <button class="book-btn">Book</button>
+          </div>
+        </div>
+
+        <div class="teacher-card" onclick="showPage('profile-page')">
+          <div class="teacher-card-top">
+            <div class="teacher-avatar" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);">KO</div>
+            <span class="teacher-badge">? Verified</span>
+          </div>
+          <div class="teacher-card-body">
+            <div class="teacher-name">Kofi Owusu</div>
+            <div class="teacher-subject">Physics & Chemistry · Kumasi</div>
+            <div class="teacher-tags"><span class="teacher-tag">A-Level</span><span class="teacher-tag">Matric</span></div>
+            <div class="teacher-stats">
+              <div class="t-stat"><span class="star">?</span><span class="val">4.88</span><span>(54)</span></div>
+              <div class="t-stat"><span class="val">98</span><span> sessions</span></div>
+            </div>
+          </div>
+          <div class="teacher-card-footer">
+            <div class="teacher-price">R140 <span>/ hr</span></div>
+            <button class="book-btn">Book</button>
+          </div>
+        </div>
+
+        <div class="teacher-card" onclick="showPage('profile-page')">
+          <div class="teacher-card-top">
+            <div class="teacher-avatar" style="background:linear-gradient(135deg,#f97316,#dc2626);"><div class="online-dot"></div>TN</div>
+            <span class="teacher-badge">? Top Tutor</span>
+          </div>
+          <div class="teacher-card-body">
+            <div class="teacher-name">Thandeka Ntuli</div>
+            <div class="teacher-subject">Graphic Design & Art · Cape Town</div>
+            <div class="teacher-tags"><span class="teacher-tag">Figma</span><span class="teacher-tag">Adobe</span></div>
+            <div class="teacher-stats">
+              <div class="t-stat"><span class="star">?</span><span class="val">4.96</span><span>(89)</span></div>
+              <div class="t-stat"><span class="val">176</span><span> sessions</span></div>
+            </div>
+          </div>
+          <div class="teacher-card-footer">
+            <div class="teacher-price">R195 <span>/ hr</span></div>
+            <button class="book-btn">Book</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- -------------------------------------- -->
+<!-- PAGE: TEACHER PROFILE                  -->
+<!-- -------------------------------------- -->
+<div class="page" id="profile-page">
+  <div class="profile-page">
+    <div class="profile-cover">
+      <div class="profile-cover-actions">
+        <button class="action-btn" onclick="showPage('discovery')">? Back to search</button>
+      </div>
+    </div>
+    <div class="profile-main">
+      <div class="profile-header">
+        <div class="profile-left">
+          <div class="profile-avatar-wrap">
+            <div class="profile-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">
+              AM
+              <div class="verified-badge">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-label="Verified"><polyline points="2.5,6 5,8.5 9.5,3.5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="profile-info">
+            <div class="profile-name">Amara Mensah</div>
+            <div class="profile-handle">@amara.mensah · Mathematics & Physics · Accra, Ghana</div>
+            <div class="flex gap2 items-center" style="margin-top:.6rem;">
+              <div class="t-stat"><span class="star">?</span><span class="val" style="font-size:.9rem;font-weight:600;">4.98</span><span class="text-muted text-sm">(124 reviews)</span></div>
+              <div class="t-stat"><span class="val" style="color:var(--green)">?</span><span class="text-muted text-sm">Online now</span></div>
+              <div class="t-stat"><span class="text-muted text-sm">312 sessions completed</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-actions">
+          <button class="action-btn">? Save</button>
+          <button class="action-btn">Message</button>
+          <button class="action-btn primary">Book session</button>
+        </div>
+      </div>
+
+      <div class="profile-grid">
+        <!-- LEFT -->
+        <div>
+          <div class="profile-card">
+            <div class="profile-card-title">About</div>
+            <p class="profile-about">I'm a Mathematics and Physics tutor with 8 years of experience helping students across West and Southern Africa achieve their academic goals. I specialize in making difficult concepts feel accessible and intuitive — my students don't just memorize formulas, they understand them.</p>
+            <p class="profile-about" style="margin-top:.85rem;">I run group sessions of up to 8 students, which keeps costs low and creates a collaborative learning environment. I've helped over 300 students improve their grades by an average of 2 letter grades within one term.</p>
+          </div>
+
+          <div class="profile-card">
+            <div class="profile-card-title">Subjects & skills</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Mathematics</span>
+              <span class="skill-tag">Physics</span>
+              <span class="skill-tag">Grade 10–12</span>
+              <span class="skill-tag">Matric prep</span>
+              <span class="skill-tag">University maths</span>
+              <span class="skill-tag">Statistics</span>
+              <span class="skill-tag">Calculus</span>
+              <span class="skill-tag">Mechanics</span>
+            </div>
+          </div>
+
+          <div class="profile-card">
+            <div class="profile-card-title">Weekly availability</div>
+            <div class="avail-grid">
+              <div class="avail-day"><div class="day-name">Mon</div><div class="day-dot dot-avail"></div></div>
+              <div class="avail-day"><div class="day-name">Tue</div><div class="day-dot dot-avail"></div></div>
+              <div class="avail-day"><div class="day-name">Wed</div><div class="day-dot dot-busy"></div></div>
+              <div class="avail-day"><div class="day-name">Thu</div><div class="day-dot dot-avail"></div></div>
+              <div class="avail-day"><div class="day-name">Fri</div><div class="day-dot dot-avail"></div></div>
+              <div class="avail-day"><div class="day-name">Sat</div><div class="day-dot dot-avail"></div></div>
+              <div class="avail-day"><div class="day-name">Sun</div><div class="day-dot dot-busy"></div></div>
+            </div>
+            <p class="text-xs text-muted" style="margin-top:.75rem;">? Available &nbsp; ? Unavailable &nbsp; Sessions: 09:00–17:00 WAT</p>
+          </div>
+
+          <div class="profile-card">
+            <div class="profile-card-title">Reviews (124)</div>
+            <div class="review-item">
+              <div class="review-header">
+                <div class="reviewer">
+                  <div class="reviewer-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">TM</div>
+                  <div>
+                    <div class="reviewer-name">Thabo Molefe</div>
+                    <div class="text-xs text-muted">Grade 12 · 5 sessions</div>
+                  </div>
+                </div>
+                <div>
+                  <div style="color:var(--gold);font-size:.82rem;">?????</div>
+                  <div class="review-date">2 weeks ago</div>
+                </div>
+              </div>
+              <p class="review-text">"Amara is exceptional. I went from 52% to 88% in maths this term. Her explanations are clear, she's patient, and the group sessions keep me motivated."</p>
+            </div>
+            <div class="review-item">
+              <div class="review-header">
+                <div class="reviewer">
+                  <div class="reviewer-avatar" style="background:linear-gradient(135deg,#f59e0b,#d97706);">KA</div>
+                  <div>
+                    <div class="reviewer-name">Kwame Agyeman</div>
+                    <div class="text-xs text-muted">University Year 1 · 8 sessions</div>
+                  </div>
+                </div>
+                <div>
+                  <div style="color:var(--gold);font-size:.82rem;">?????</div>
+                  <div class="review-date">1 month ago</div>
+                </div>
+              </div>
+              <p class="review-text">"University calculus was destroying me. Three sessions with Amara and I finally understand derivatives. Worth every rand. Already rebooked."</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT: BOOKING CARD -->
+        <div>
+          <div class="booking-card">
+            <div class="booking-card-header">
+              <div class="booking-price-main">R180 <span>/ hour</span></div>
+              <div class="booking-rating">
+                <span style="color:var(--gold);">?</span>
+                <strong>4.98</strong>
+                <span class="text-muted">(124 reviews)</span>
+              </div>
+            </div>
+            <div class="booking-card-body">
+              <div class="booking-detail">
+                <span class="bd-label">Session type</span>
+                <span class="bd-val">Group (up to 8)</span>
+              </div>
+              <div class="booking-detail">
+                <span class="bd-label">Format</span>
+                <span class="bd-val">In-person</span>
+              </div>
+              <div class="booking-detail">
+                <span class="bd-label">Languages</span>
+                <span class="bd-val">English, Twi</span>
+              </div>
+              <div class="booking-detail">
+                <span class="bd-label">Response time</span>
+                <span class="bd-val" style="color:var(--green);">Usually &lt; 1 hr</span>
+              </div>
+              <div class="booking-detail">
+                <span class="bd-label">Availability</span>
+                <span class="bd-val" style="color:var(--green);">? Open this week</span>
+              </div>
+              <button class="booking-cta">Book a session</button>
+              <button class="msg-cta">Send a message</button>
+              <div class="response-row">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="var(--text3)" stroke-width="1.2"/><polyline points="7,4 7,7 9,9" stroke="var(--text3)" stroke-width="1.2" stroke-linecap="round"/></svg>
+                97% response rate · Usually replies in under an hour
+              </div>
+            </div>
+          </div>
+
+          <div class="profile-card" style="margin-top:1rem;">
+            <div class="profile-card-title">Tutor stats</div>
+            <div class="quick-stat"><span class="qs-label">Sessions completed</span><span class="qs-val">312</span></div>
+            <div class="quick-stat"><span class="qs-label">Repeat booking rate</span><span class="qs-val" style="color:var(--green);">94%</span></div>
+            <div class="quick-stat"><span class="qs-label">Avg. grade improvement</span><span class="qs-val">+2 letters</span></div>
+            <div class="quick-stat"><span class="qs-label">Member since</span><span class="qs-val">Jan 2024</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- -------------------------------------- -->
+<!-- PAGE: DASHBOARD                        -->
+<!-- -------------------------------------- -->
+<div class="page" id="dashboard">
+  <div class="dash-layout">
+
+    <!-- SIDEBAR -->
+    <div class="dash-sidebar">
+      <div class="dash-nav-section">Main</div>
+      <div class="dash-nav-item active">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="2" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="2" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/><rect x="9" y="9" width="5" height="5" rx="1" stroke="currentColor" stroke-width="1.2"/></svg>
+        Overview
+      </div>
+      <div class="dash-nav-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="3" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="7" x2="11" y2="7" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/><line x1="5" y1="9.5" x2="8" y2="9.5" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/></svg>
+        My Sessions
+        <span class="n-badge">3</span>
+      </div>
+      <div class="dash-nav-item" onclick="showPage('discovery')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.2"/><line x1="10.5" y1="10.5" x2="14" y2="14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Find Tutors
+      </div>
+      <div class="dash-nav-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M13 5H3a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h2l2 2 2-2h4a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
+        Messages
+        <span class="n-badge">5</span>
+      </div>
+      <div class="dash-nav-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M8 2a3 3 0 0 1 3 3v3l1.5 2h-9L5 8V5a3 3 0 0 1 3-3z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/><path d="M6.5 12.5a1.5 1.5 0 0 0 3 0" stroke="currentColor" stroke-width="1.2"/></svg>
+        Notifications
+        <span class="n-badge">2</span>
+      </div>
+
+      <div class="dash-nav-section">Teaching</div>
+      <div class="dash-nav-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><rect x="2" y="4" width="12" height="9" rx="1.5" stroke="currentColor" stroke-width="1.2"/><line x1="5" y1="4" x2="5" y2="2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><line x1="11" y1="4" x2="11" y2="2.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Booking Requests
+        <span class="n-badge">4</span>
+      </div>
+      <div class="dash-nav-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><polyline points="2,11 5,7 8,9 11,5 14,8" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Earnings
+      </div>
+      <div class="dash-nav-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="6" r="3" stroke="currentColor" stroke-width="1.2"/><path d="M3 13c0-2.5 2-4 5-4s5 1.5 5 4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        My Profile
+      </div>
+
+      <div class="dash-nav-section">Account</div>
+      <div class="dash-nav-item">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="2.5" stroke="currentColor" stroke-width="1.2"/><path d="M8 2v1.5M8 12.5V14M2 8h1.5M12.5 8H14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Settings
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="dash-main">
+      <div class="dash-topbar">
+        <div>
+          <div class="dash-greeting">Good morning, <span>Thabo</span> ??</div>
+          <div class="dash-date">Wednesday, 14 May 2026</div>
+        </div>
+        <div class="dash-actions">
+          <button class="action-btn" onclick="showPage('discovery')">Find a tutor</button>
+          <button class="action-btn primary">+ Book session</button>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">Sessions this month</div>
+          <div class="kpi-val">12</div>
+          <div class="kpi-trend">? +4 from last month</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Hours learned</div>
+          <div class="kpi-val">18h</div>
+          <div class="kpi-trend">? On track</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Saved tutors</div>
+          <div class="kpi-val">7</div>
+          <div class="kpi-trend" style="color:var(--text3);">? View list</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Avg. session rating</div>
+          <div class="kpi-val">4.9?</div>
+          <div class="kpi-trend">? Top 5% of students</div>
+        </div>
+      </div>
+
+      <div class="dash-grid">
+        <!-- LEFT -->
+        <div>
+          <!-- UPCOMING SESSIONS -->
+          <div class="dash-panel">
+            <div class="panel-header">
+              <span class="panel-title">Upcoming sessions</span>
+              <a href="#" class="panel-action">View all</a>
+            </div>
+            <div class="session-item">
+              <div class="session-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">AM</div>
+              <div class="session-info">
+                <div class="session-name">Amara Mensah — Mathematics</div>
+                <div class="session-meta">Mon 19 May · 14:00–16:00 · In-person · Accra Central</div>
+              </div>
+              <span class="session-status status-confirmed">Confirmed</span>
+            </div>
+            <div class="session-item">
+              <div class="session-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">FO</div>
+              <div class="session-info">
+                <div class="session-name">Fatima Osei — English Essay Writing</div>
+                <div class="session-meta">Wed 21 May · 10:00–11:30 · In-person · Westlands</div>
+              </div>
+              <span class="session-status status-confirmed">Confirmed</span>
+            </div>
+            <div class="session-item">
+              <div class="session-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">NK</div>
+              <div class="session-info">
+                <div class="session-name">Nkosi Dlamini — Python Intro</div>
+                <div class="session-meta">Fri 23 May · 09:00–11:00 · In-person · Sandton</div>
+              </div>
+              <span class="session-status status-pending">Pending</span>
+            </div>
+          </div>
+
+          <!-- EARNINGS CHART (teacher view) -->
+          <div class="dash-panel">
+            <div class="panel-header">
+              <span class="panel-title">Monthly earnings (Teacher view)</span>
+              <a href="#" class="panel-action">Download report</a>
+            </div>
+            <div class="earnings-chart" aria-label="Bar chart showing monthly earnings">
+              <div class="bar-wrap"><div class="bar" style="height:40%"></div><div class="bar-label">Nov</div></div>
+              <div class="bar-wrap"><div class="bar" style="height:55%"></div><div class="bar-label">Dec</div></div>
+              <div class="bar-wrap"><div class="bar" style="height:48%"></div><div class="bar-label">Jan</div></div>
+              <div class="bar-wrap"><div class="bar" style="height:70%"></div><div class="bar-label">Feb</div></div>
+              <div class="bar-wrap"><div class="bar" style="height:62%"></div><div class="bar-label">Mar</div></div>
+              <div class="bar-wrap"><div class="bar" style="height:85%"></div><div class="bar-label">Apr</div></div>
+              <div class="bar-wrap"><div class="bar" style="height:100%;opacity:1;"></div><div class="bar-label" style="color:var(--accent2);font-weight:500;">May</div></div>
+            </div>
+            <div style="padding:0 1.5rem 1.25rem;display:flex;gap:2rem;">
+              <div><div class="text-xs text-muted">This month</div><div style="font-family:'Bricolage Grotesque',sans-serif;font-size:1.3rem;font-weight:600;color:var(--text);">R14,820</div></div>
+              <div><div class="text-xs text-muted">Last month</div><div style="font-size:1rem;color:var(--text2);">R12,340</div></div>
+              <div><div class="text-xs text-muted">Growth</div><div style="font-size:1rem;color:var(--green);">+20.1%</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RIGHT -->
+        <div>
+          <!-- MESSAGES -->
+          <div class="dash-panel" style="margin-bottom:1.5rem;">
+            <div class="panel-header">
+              <span class="panel-title">Recent messages</span>
+              <a href="#" class="panel-action">Open inbox</a>
+            </div>
+            <div class="msg-list-item">
+              <div class="msg-avatar" style="background:linear-gradient(135deg,#6366f1,#8b5cf6);">AM</div>
+              <div style="flex:1;min-width:0;">
+                <div class="msg-name">Amara Mensah</div>
+                <div class="msg-preview">Can we move Monday's session to 3pm?</div>
+              </div>
+              <div style="flex-shrink:0;display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
+                <div class="msg-time">2m ago</div>
+                <div class="msg-unread"></div>
+              </div>
+            </div>
+            <div class="msg-list-item">
+              <div class="msg-avatar" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">NK</div>
+              <div style="flex:1;min-width:0;">
+                <div class="msg-name">Nkosi Dlamini</div>
+                <div class="msg-preview">Booking confirmed. Bring your laptop.</div>
+              </div>
+              <div style="flex-shrink:0;text-align:right;">
+                <div class="msg-time">1h ago</div>
+              </div>
+            </div>
+            <div class="msg-list-item">
+              <div class="msg-avatar" style="background:linear-gradient(135deg,#10b981,#059669);">FO</div>
+              <div style="flex:1;min-width:0;">
+                <div class="msg-name">Fatima Osei</div>
+                <div class="msg-preview">Here's the essay outline we'll cover...</div>
+              </div>
+              <div style="flex-shrink:0;text-align:right;">
+                <div class="msg-time">3h ago</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- QUICK STATS -->
+          <div class="dash-panel">
+            <div class="panel-header">
+              <span class="panel-title">Your stats</span>
+            </div>
+            <div class="quick-stat"><span class="qs-label">Total sessions booked</span><span class="qs-val">47</span></div>
+            <div class="quick-stat"><span class="qs-label">Unique tutors worked with</span><span class="qs-val">8</span></div>
+            <div class="quick-stat"><span class="qs-label">Saved tutors</span><span class="qs-val">7</span></div>
+            <div class="quick-stat"><span class="qs-label">Reviews left</span><span class="qs-val">42</span></div>
+            <div class="quick-stat"><span class="qs-label">Member since</span><span class="qs-val">Feb 2026</span></div>
+            <div class="quick-stat">
+              <span class="qs-label">Account status</span>
+              <span class="qs-val" style="color:var(--green);">? Active</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// -- PAGE ROUTING --
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById(id);
+  if (target) {
+    target.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  // Update nav active states
+  const map = {'landing':'nl-home','discovery':'nl-disc','dashboard':'nl-dash','profile-page':'nl-prof'};
+  document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+  if (map[id]) {
+    const el = document.getElementById(map[id]);
+    if (el) el.classList.add('active');
+  }
+}
+
+// -- THEME TOGGLE --
+function toggleTheme() {
+  const html = document.documentElement;
+  const isDark = html.getAttribute('data-theme') === 'dark';
+  html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+  const icon = document.getElementById('themeIcon');
+  if (isDark) {
+    // Switch to moon icon
+    icon.innerHTML = `<path d="M13 7A6 6 0 0 1 7 13 6 6 0 0 1 7 1a6 6 0 0 0 6 6z" fill="currentColor" stroke="none"/>`;
+  } else {
+    // Switch back to sun icon
+    icon.innerHTML = `
+      <circle cx="8" cy="8" r="3.5" stroke="currentColor" stroke-width="1.3"/>
+      <line x1="8" y1="1" x2="8" y2="3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="8" y1="13" x2="8" y2="15" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="1" y1="8" x2="3" y2="8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="13" y1="8" x2="15" y2="8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="3.05" y1="3.05" x2="4.46" y2="4.46" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="11.54" y1="11.54" x2="12.95" y2="12.95" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="12.95" y1="3.05" x2="11.54" y2="4.46" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+      <line x1="4.46" y1="11.54" x2="3.05" y2="12.95" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+    `;
+  }
+}
+
+// -- FILTER PILLS --
+document.querySelectorAll('.filter-pill').forEach(pill => {
+  pill.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+  });
+});
+
+// -- ACTIVE NAV ON LOAD --
+document.getElementById('nl-home').classList.add('active');
+</script>
+</body>
+</html>
